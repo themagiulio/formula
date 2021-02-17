@@ -49,7 +49,7 @@ def packageAdd(name):
             #open(pkg_archive_path, 'wb').write(data.raw.read())
             wget.download(download_url, out=pkg_archive_path)
             print()
-            if pkg.endswith('tar.gz'):
+            if pkg.endswith('tar.gz') or pkg.endswith('tgz'):
                 tar = tarfile.open(pkg_archive_path, "r:gz")
                 tar.extractall(pkg_path)
                 tar.close()
