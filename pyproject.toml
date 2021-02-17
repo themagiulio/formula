@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "formula"
-version = "0.0.1"
+name = "formulapm"
+version = "0.0.2"
 description = "Fortran Package Manager"
-authors = ["Giulio De Matteis <giuliod35@gmail.com>"]
+authors = ["Giulio De Matteis <giuliodematteis@icloud.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
@@ -20,4 +20,4 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-formula = "formula.main:cli"
+formula = "formulapm.main:cli"

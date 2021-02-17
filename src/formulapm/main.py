@@ -15,7 +15,7 @@ import subprocess
 
 
 def displayVersion():
-    print(f"Formula v{pkg_resources.get_distribution('formula').version}")
+    print(f"Formula v{pkg_resources.get_distribution('formulapm').version}")
     print("Developer by: Giulio De Matteis <giuliodematteis@icloud.com>")
 
 default_config = [
@@ -68,6 +68,8 @@ def projectCompile():
 def runScript(name):
     try:
         document = openConfig()
+        if document == False:
+            return
         process = subprocess.run(list(document[1].values())[0][name], shell=True)
     except KeyError:
         print('No script was found with the provided name.')
