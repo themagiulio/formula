@@ -11,11 +11,11 @@ default_config = [
     },
     {
         'scripts': {
-            'hello': 'echo "Hello World!"'
+            'start': 'echo "Hello World!"'
         }
     },
     {
-        'packages': ['hello']
+        'packages': []
     }
 ]
 
