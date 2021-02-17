@@ -27,7 +27,7 @@ default_config = [
     },
     {
         'scripts': {
-            'start': 'echo "Hello World!"'
+            'start': 'formula --compile && ./build/program.out'
         }
     },
     {
@@ -41,6 +41,7 @@ def openConfig():
             return yaml.full_load(file)
     except IOError:
         print("No config.yaml file found.")
+        return False
 
 def projectInit(name):
     os.mkdir(name)
@@ -69,18 +70,9 @@ def runScript(name):
         document = openConfig()
         process = subprocess.run(list(document[1].values())[0][name], shell=True)
     except KeyError:
-        print('No script was found with the mathcing name.')
+        print('No script was found with the provided name.')
 
 repo = 'https://pastebin.com/raw/E9aiX0NA'
-
-def packageAlreadyInstalled(pkgName, pkgVersion):
-    with open('config.yaml') as file:
-        document = yaml.full_load(file)
-        pkglist = list(document[2].values())[0]
-        if f"{pkgName}@{pkgVersion}" in pkglist:
-            return True
-        else:
-            return False
 
 def packageAdd(name):
     try:
@@ -93,9 +85,15 @@ def packageAdd(name):
                 name, version = name.split('@', 1)
                 download_url = data[name][version]
                    
-            if packageAlreadyInstalled(name, version):
+            document = openConfig()
+            if document == False:
+                return
+
+            pkglist = list(document[2].values())[0]
+            if f"{name}@{version}" in pkglist:
                 print(f"{name}@{version} is already installed.")
                 return
+
 
             pkg = f"{name}-{download_url.rsplit('/', 1)[-1]}"
             pkg_archive_path = os.path.join('fortran_modules', pkg)
@@ -114,8 +112,8 @@ def packageAdd(name):
 
             os.unlink(pkg_archive_path)
 
-            document = openConfig()
-            pkglist = list(document[2].values())[0]
+            if document == False:
+                return
             pkglist.append(f"{name}@{version}")
             with open('config.yaml', 'w') as file:
                 yaml.dump(document, file)
@@ -144,6 +142,7 @@ def packageRemove(name):
         pkglist.remove(pkgs[0])
         with open('config.yaml', 'w') as file:
             yaml.dump(document, file)
+        print(f"{pkgs[0]} was succesfully removed.")
     elif pkgs_len > 1:
         print(f"{pkgs_len} modules were found. Type the name and the version of the one you want to remove.")
         for pkg in pkgs:
@@ -151,6 +150,8 @@ def packageRemove(name):
 
 def packageList():
     document = openConfig()
+    if document == False:
+        return
     pkglist = list(document[2].values())[0]
     for pkg in pkglist:
         print(f"- {pkg}")
@@ -169,6 +170,7 @@ def cli():
 
         parser.add_argument('--remove', '-R',
                             dest='packageNameToRemove',
+                            nargs='+',
                             help='Remove a module')
 
         parser.add_argument('--list', '-l',
@@ -219,8 +221,9 @@ def cli():
                 projectInit(args.projectName)
             elif args.scriptName:
                 runScript(args.scriptName)
-            elif args.packageNameToRemove:
-                packageRemove(args.packageNameToRemove)
         if args.packageName:
             for pkg in args.packageName:
                 packageAdd(pkg)
+        if args.packageNameToRemove:
+            for pkg in args.packageNameToRemove:
+                packageRemove(pkg)
