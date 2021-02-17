@@ -7,8 +7,6 @@ function App() {
     <Router>
       <Switch>
         <Route path="/" exact component={Home}/>
-      {/*  <Route path="/notfound" component={NotFound} /> */}
-        <Redirect to="/"/>
       </Switch>
     </Router>
   );
