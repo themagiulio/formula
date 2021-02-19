@@ -1,37 +1,82 @@
 # Formula
 
-Formula is a package manager built for Fortran Language.
+Formula is a package manager built for the Fortran Language.
+
+## Installation
+
+You can install the latest version through pip: `pip install formulapm`
 
 ## Commands
 
-### Display Formula version
-
-`formula -v` or `formula --version`
-
 ### Initialize Project
 
-`formula -i <Project Name>` or `formula --init <Project Name>`
+`formula --init <Project Name>` or `formula -i <Project Name>`
 
 ### Add Package
 
-`formula -a <Package Name>` or `formula --add <Package Name>`
+`formula --add <Package Name>` or `formula -a <Package Name>`
 
 ### Remove Package
 
-`formula -R <Package Name>` or `formula --remove <Package Name>`
+`formula --remove <Package Name>` or `formula -R <Package Name>`
 
-### Compile Project
+### Package List
 
-`formula -c` or `formula --compile`
+`formula --list` or `formula -l`
 
-*`gfortran` is required to compile*
+## Compile Project
 
-### Run Custom Script
+`formula --compile` or `formula -c`
 
-`formula -r <Script Name>` or `formula --run <Script Name>`
+*gfortran is required to compile Fortan projects.*
+
+### Run Script
+
+`formula --run <Script Name>` or `formula -r <Script Name>`
 
 ### Run Start Script
 
-Alias for `formula --run start`
+`formula --start` (alias for `formula --run start`)
 
-`formula --start`
+### Display Formula Version
+
+`formula --version` or `formula -v`
+
+## Configure Project
+
+The project is configurable by editing the `config.yaml` file, which is automatically created when a project is initialized.
+
+### Configure repositories
+
+Repositories can be linked to Formula with a json file which contains all the information about the inserted packages and their versions.
+
+Each projects come with a default repository. Multiple repositories can be added. If they have packages with the same name the latter repository will be priviged.
+
+**Example**
+
+```
+- repositories:
+  - https://pastebin.com/raw/E9aiX0NA
+```
+
+### Configure Project Folders
+
+Project Folders like `build` and `src` are configurable through the `folders` section.
+
+### Configure Scripts
+
+Scripts can be added through the `scripts` section.
+
+**Example**
+
+```
+...
+- scripts:
+    start: echo "Hello World!"
+...
+```
+
+```
+$ formula --run start
+Hello World!
+```

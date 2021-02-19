@@ -1,13 +1,12 @@
 [tool.poetry]
 name = "formulapm"
-version = "0.0.2"
+version = "0.0.3"
 description = "Fortran Package Manager"
 authors = ["Giulio De Matteis <giuliodematteis@icloud.com>"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-arrow = "^0.17.0"
 argparse = "^1.4.0"
 PyYAML = "^5.4.1"
 wget = "^3.2"

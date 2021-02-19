@@ -1,6 +1,6 @@
-import argparse
-import urllib.request
 from urllib.error import HTTPError
+import urllib.request
+import argparse
 import wget
 import io
 import requests
@@ -12,7 +12,6 @@ import yaml
 import sys
 import pkg_resources
 import subprocess
-
 
 def displayVersion():
     print(f"Formula v{pkg_resources.get_distribution('formulapm').version}")
@@ -32,6 +31,11 @@ default_config = [
     },
     {
         'packages': []
+    },
+    {
+        'repositories': [
+            'https://pastebin.com/raw/E9aiX0NA'
+        ]
     }
 ]
 
@@ -76,16 +80,32 @@ def runScript(name):
 
 repo = 'https://pastebin.com/raw/E9aiX0NA'
 
-def packageAdd(name):
+def loadRepo(repo_url):
     try:
-            with urllib.request.urlopen(repo) as url:
-                data = json.loads(url.read().decode())
+        with urllib.request.urlopen(repo_url) as url:
+            return json.loads(url.read().decode())
+    except HTTPError as e:
+        if e.code == 404:
+            print('The provided repository does not work.')
+            return
+
+def packageAdd(name):
+    document = openConfig()
+    if document == False:
+        return
+    repolist = reversed(list(document[3].values())[0])
+    repositories = {}
+    
+    for repo in repolist:
+        repositories = {**repositories, **loadRepo(repo)}
+    
+    try:
             if '@' not in name:
-                download_url = list(data[name].values())[0]
-                version = list(data[name].keys())[0]
+                download_url = list(repositories[name].values())[0]
+                version = list(repositories[name].keys())[0]
             else:
                 name, version = name.split('@', 1)
-                download_url = data[name][version]
+                download_url = repositories[name][version]
                    
             document = openConfig()
             if document == False:
@@ -114,12 +134,10 @@ def packageAdd(name):
 
             os.unlink(pkg_archive_path)
 
-            if document == False:
-                return
             pkglist.append(f"{name}@{version}")
             with open('config.yaml', 'w') as file:
                 yaml.dump(document, file)
-
+    
     except HTTPError as e:
         if e.code == 404:
             print('The provided repository does not work.')
