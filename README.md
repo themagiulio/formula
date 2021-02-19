@@ -24,7 +24,7 @@ You can install the latest version through pip: `pip install formulapm`
 
 `formula --list` or `formula -l`
 
-## Compile Project
+### Compile Project
 
 `formula --compile` or `formula -c`
 
@@ -63,6 +63,14 @@ Each projects come with a default repository. Multiple repositories can be added
 
 Project Folders like `build` and `src` are configurable through the `folders` section.
 
+**Example**
+
+```
+- folders:
+    build: build
+    source: src
+```
+
 ### Configure Scripts
 
 Scripts can be added through the `scripts` section.
@@ -70,10 +78,8 @@ Scripts can be added through the `scripts` section.
 **Example**
 
 ```
-...
 - scripts:
     start: echo "Hello World!"
-...
 ```
 
 ```
