@@ -4,11 +4,7 @@ import Home from './Pages/Home'
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={Home}/>
-      </Switch>
-    </Router>
+    <Home/>
   );
 }
 
