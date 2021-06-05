@@ -15,13 +15,14 @@ import subprocess
 
 def displayVersion():
     print(f"Formula v{pkg_resources.get_distribution('formulapm').version}")
-    print("Developer by: Giulio De Matteis <giuliodematteis@icloud.com>")
+    print("Developed by: Giulio De Matteis <giuliodematteis@icloud.com>")
 
 default_config = [
     {
         'folders': {
             'build': 'build',
-            'source': 'src'
+            'source': 'src',
+            'modules': 'modules'
         }
     },
     {
